@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
-const projectDetailSchema = new mongoose.Schema({
+const projectSchema = new mongoose.Schema({
     projectId: {
-        type: Number,
+        type: String,
         required: true
     },
     projectName: {
@@ -18,6 +18,6 @@ const projectDetailSchema = new mongoose.Schema({
     }
 })
 
-const projectDetailModel = mongoose.model('projectdetail', projectDetailSchema)
+const projectDetailModel = mongoose.model('projectdetail', projectSchema)
 
 export default projectDetailModel

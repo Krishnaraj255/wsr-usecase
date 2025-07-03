@@ -1,5 +1,5 @@
 import express, { Router } from "express"
-import { role } from "../../controllers/roleController"
+import { role } from "../../controllers/role/roleController"
 import { z } from 'zod'
 import { schemaValidation } from "../../../data/schemaValidator/schemaValidator"
 
@@ -17,3 +17,4 @@ roleRoute.get('/role', role.get)
 
 export default roleRoute
 
+ 

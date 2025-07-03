@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import { employee } from '../../controllers/employeeController'
+import { employee } from '../../controllers/employee/employeeController'
 import { z } from 'zod'
 import { schemaValidation } from '../../../data/schemaValidator/schemaValidator'
 const employeeRoute = Router()

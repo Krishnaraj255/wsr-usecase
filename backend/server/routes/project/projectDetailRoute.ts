@@ -1,21 +1,20 @@
 import express, { Router } from 'express'
-import { projectdetail } from '../../controllers/projectDetailController'
-import {z} from 'zod'
+import { projectdetail } from '../../controllers/project/projectController'
+import { z } from 'zod'
+import { schemaValidation } from '../../../data/schemaValidator/schemaValidator'
+
+const projectRoute = Router()
+
+const projectDetail = z.object({
+    projectName: z.string(),
+    resources: z.record(z.any()),
+    sprint: z.record(z.any())
+}).strict()
+
+projectRoute.post('/projectdetail', schemaValidation(projectDetail), projectdetail.post)
+
+projectRoute.get('/projectdetail', projectdetail.get)
 
 
-const projectDetailRoute = Router()
 
-// const projectDetail = z.object({
-//     projectName:z.string(),
-//     resources:z.object(),
-//     sprint:z.object()
-// }).strict()
-
-projectDetailRoute.get('/projectdetail', projectdetail.get)
-projectDetailRoute.post('/projectdetail', projectdetail.post)
-
-
-
-
-  
-export default projectDetailRoute 
+export default projectRoute 

@@ -4,8 +4,7 @@ const employeeSchema = new mongoose.Schema({
     employeeId: {
         type: String,
         required: true,
-        unique: true
-    }, 
+    },
     employeeNames: {
         type: [String],
         required: true
