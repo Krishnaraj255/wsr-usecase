@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { Employee as Emp } from "../../../business/employee/employee";
 import { Employee } from "../../../data/employee/employee";
 
 const post = async (req: Request, res: Response, next: NextFunction) => {
@@ -10,10 +11,10 @@ const post = async (req: Request, res: Response, next: NextFunction) => {
         res.status(500).send("Data insertion failed")
     }
 }
-
+ 
 const get = async (req: Request, res: Response) => {
     try {
-        const data = await Employee.get()
+        const data = await Emp.get()
         res.status(200).send(data)
     }
     catch (error) {

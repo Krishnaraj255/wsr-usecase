@@ -14,18 +14,15 @@ const create = async (employeeNames: string[]) => {
     }
 }
 
-const get = async () => {
+const get = async () => { 
     try {
-        const employees = await employeeModel.find({});
-
-        return employees
-
+        return employeeModel.find({});
     } catch (error) {
         throw error;
     }
 }
-
-export const Employee = {
+ 
+export const Employee = { 
     create,
     get
 }

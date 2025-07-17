@@ -8,7 +8,7 @@ const roleRoute = Router()
 const roleSchema = z.object({
     roleName: z.array(z.string())
 }).strict()
-
+ 
 
 roleRoute.post('/role', schemaValidation(roleSchema), role.post)
 

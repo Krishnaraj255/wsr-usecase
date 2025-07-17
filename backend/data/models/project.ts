@@ -10,12 +10,16 @@ const projectSchema = new mongoose.Schema({
         required: true
     },
     resources: {
-        type: Object,
-        required: true
+        type: Map,
+        of: [String]
     },
     sprint: {
         type: Object
-    }
+    },
+    createdAt: {
+    type: Date,
+    default: Date.now 
+  },
 })
 
 const projectDetailModel = mongoose.model('projectdetail', projectSchema)

@@ -19,8 +19,7 @@ const create = async (roleName: string[]) => {
 const get = async () => {
 
     try {
-        const role = await roleModel.find({})
-        return role
+        return roleModel.find({})
     }
     catch (error) {
         throw error

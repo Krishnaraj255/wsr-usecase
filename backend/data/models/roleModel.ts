@@ -8,7 +8,7 @@ const roleSchema = new mongoose.Schema({
     roleName: {
         type: [String],
         required: true
-    }
+    }  
 })
 
 const roleModel = mongoose.model('roles', roleSchema)

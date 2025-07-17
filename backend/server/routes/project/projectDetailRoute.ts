@@ -8,7 +8,7 @@ const projectRoute = Router()
 const projectDetail = z.object({
     projectName: z.string(),
     resources: z.record(z.any()),
-    sprint: z.record(z.any())
+    sprint: z.record(z.any()).optional()
 }).strict()
 
 projectRoute.post('/projectdetail', schemaValidation(projectDetail), projectdetail.post)
