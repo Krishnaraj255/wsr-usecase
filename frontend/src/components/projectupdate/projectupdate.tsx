@@ -11,19 +11,24 @@ import {
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { useParams } from 'react-router-dom';
+import type { projectDetail } from '../../types/projectdetail';
 
 const ProjectUpdate = () => {
-    const [roleOptions, setRoleOptions] = useState < string[] > ([]);
-    const [employeeOptions, setEmployeeOptions] = useState < string[] > ([]);
-    const [rows, setRows] = useState < { role: string | null; employee: string | null }[] > ([
+    const [roleOptions, setRoleOptions] = useState<string[]>([]);
+    const [employeeOptions, setEmployeeOptions] = useState<string[]>([]);
+    const [rows, setRows] = useState<{ role: string | null; employee: string | null }[]>([
         { role: null, employee: null },
     ]);
     const [projectName, setProjectName] = useState('');
+    const { projectId } = useParams<{ projectId: string }>();
+
 
     useEffect(() => {
         const fetchRoles = async () => {
             try {
-                const res = await axios.get('http://localhost:3001/api/ws-report/role');
+                const res = await axios.get('http://localhost:3001/api/ws-report/role');      // Fetching the role to display in the frontend
                 setRoleOptions(res.data);
             } catch (err) {
                 console.log(err);
@@ -32,8 +37,32 @@ const ProjectUpdate = () => {
 
         const fetchEmployees = async () => {
             try {
-                const res = await axios.get('http://localhost:3001/api/ws-report/employee');
+                const res = await axios.get('http://localhost:3001/api/ws-report/employee');        // Fetching the role to display in the frontend
                 setEmployeeOptions(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        const fetchEmployee = async () => {
+            try {
+                const res = await axios.get(`http://localhost:3001/api/ws-report/projectdetail/${projectId}`);   //Get the projectdetail to update
+                const projectData = res.data;
+
+
+                setProjectName(projectData.projectName);
+
+                const populatedRows: { role: string; employee: string }[] = [];
+
+                if (projectData.resources) {
+                    for (const [role, employees] of Object.entries(projectData.resources)) {
+                        (employees as string[]).forEach(employee => {
+                            populatedRows.push({ role, employee });
+                        });
+                    }
+                }
+
+                setRows(populatedRows.length > 0 ? populatedRows : [{ role: null, employee: null }]);
             } catch (err) {
                 console.log(err);
             }
@@ -41,9 +70,13 @@ const ProjectUpdate = () => {
 
         fetchRoles();
         fetchEmployees();
-    }, []);
+        fetchEmployee();
+    }, [projectId]);
 
-    const handleChange = (index: number, field: 'employee' | 'role', value: string | null
+    const handleChange = (
+        index: number,
+        field: 'employee' | 'role',
+        value: string | null
     ) => {
         const newRows = [...rows];
         newRows[index][field] = value;
@@ -73,29 +106,36 @@ const ProjectUpdate = () => {
 
         const payload = {
             projectName,
+            projectId,
             resources: resourceMap,
         };
 
+
         try {
+            console.log(payload)
             const res = await axios.post(
-                'http://localhost:3001/api/ws-report/projectdetail',
+                `http://localhost:3001/api/ws-report/projectdetail/`,              // update the data
                 payload
             );
-            console.log('success:', res.data);
             setRows([{ role: null, employee: null }]);
             setProjectName("");
-            alert('Project submitted successfully!');
+            alert('Project updated successfully!');
         } catch (err) {
             console.error('Submission error:', err);
-            alert('Failed to submit project.');
+            alert('Failed to update project.');
         }
     };
 
-
-
-    const isSubmitDisable = rows.some(
+    const isSubmitDisabled = rows.some(
         (row) => !(row.employee && row.role) || !projectName
     );
+
+   const deleteRow = (indexToDelete:number) => {
+    setRows((prevRows) => prevRows.filter((_, index) => index !== indexToDelete));
+};
+
+
+
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
@@ -107,8 +147,8 @@ const ProjectUpdate = () => {
                             label="Project Name"
                             variant="outlined"
                             fullWidth
+                            disabled
                             value={projectName}
-                            onChange={(e) => setProjectName(e.target.value)}
                             sx={{ mb: 3 }}
                         />
                     </Grid>
@@ -116,11 +156,12 @@ const ProjectUpdate = () => {
                         {rows.map((row, index) => (
                             <Grid container spacing={1} alignItems="center" key={index}>
 
-                                <Grid size={{ xs: 6 }}>
+                                <Grid size={{ xs: 5 }}>
                                     <Autocomplete
                                         options={employeeOptions}
                                         value={row.employee}
                                         onChange={(e, val) => handleChange(index, 'employee', val)}
+                                        isOptionEqualToValue={(option, value) => option === value}
                                         renderInput={(params) => (
                                             <TextField {...params} label="Employee" />
                                         )}
@@ -128,15 +169,29 @@ const ProjectUpdate = () => {
                                     />
 
                                 </Grid>
-                                <Grid size={{ xs: 6 }}>
+                                <Grid size={{ xs: 5 }}>
                                     <Autocomplete
                                         options={roleOptions}
                                         value={row.role}
                                         onChange={(e, val) => handleChange(index, 'role', val)}
-                                        renderInput={(params) => <TextField {...params} label="Role" />}
+                                        isOptionEqualToValue={(option, value) => option === value}
+                                        renderInput={(params) => (
+                                            <TextField {...params} label="Role" />
+                                        )}
                                         fullWidth
                                     />
 
+                                </Grid>
+                                <Grid size={{ xs: 2 }}>
+                                    <Button
+                                        fullWidth
+                                        variant="contained"
+                                        onClick={()=>deleteRow(index)}
+                                    >
+                                        <Tooltip title="Delete Employee">
+                                            <IconButton  ><DeleteIcon /></IconButton>
+                                        </Tooltip>
+                                    </Button>
                                 </Grid>
                                 {index === rows.length - 1 && (
                                     <Grid size={{ xs: 2 }} >
@@ -167,7 +222,7 @@ const ProjectUpdate = () => {
                         variant="contained"
                         sx={{ mt: 3 }}
                         onClick={handleSubmit}
-                        disabled={isSubmitDisable}
+                        disabled={isSubmitDisabled}
                     >
                         Submit
                     </Button>

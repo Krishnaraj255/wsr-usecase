@@ -14,12 +14,13 @@ const projectSchema = new mongoose.Schema({
         of: [String]
     },
     sprint: {
-        type: Object
+        type: Object,
+        default: {}
     },
     createdAt: {
-    type: Date,
-    default: Date.now 
-  },
+        type: Date,
+        default: Date.now
+    },
 })
 
 const projectDetailModel = mongoose.model('projectdetail', projectSchema)

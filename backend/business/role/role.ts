@@ -8,5 +8,5 @@ const get = async () => {
 
  
 export const role = {
-    get
+    get 
 } 

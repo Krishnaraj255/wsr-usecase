@@ -2,16 +2,19 @@ import { Request, Response } from 'express'
 import projectDetailModel from "../../../data/models/project";
 import { randomUUID } from 'crypto';
 import { Project } from '../../../data/project/project';
+import { project } from '../../../business/project/project';
+import projectType from '../../../types';
+
 
 const post = async (req: Request, res: Response) => {
     const data = {
-        projectId: randomUUID(),
+        projectId: req.body.projectId,
         projectName: req.body.projectName,
         resources: req.body.resources,
         sprint: req.body.sprint
     }
     try {
-        await Project.create(data)
+        await Project.save(data)
         res.status(201).end("Project created successfully")
     }
     catch (error) {
@@ -21,7 +24,7 @@ const post = async (req: Request, res: Response) => {
 
 const get = async (req: Request, res: Response) => {
     try {
-        const data = await Project.get()
+        const data = await project.get()
         res.status(200).send(data)
     }
     catch (error) {
@@ -29,9 +32,22 @@ const get = async (req: Request, res: Response) => {
     }
 }
 
+const getSingleData = async (req: Request, res: Response) => {
+    try {
+        const id = req.params.projectId;
+        const project = await projectDetailModel.findOne({ projectId: id });
+
+
+        res.status(200).send(project);
+    } catch (err) {
+        console.error("Error updating project:", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
 
 
 export const projectdetail = {
     get,
-    post
+    post,
+    getSingleData
 }

@@ -23,7 +23,7 @@ const get = async (req: Request, res: Response) => {
 }
 
 export const role = {
-    post,
+    post, 
     get 
 }
 

@@ -10,7 +10,7 @@ const create = async (roleName: string[]) => {
         }))
 
         await roleModel.insertMany(role) 
-    }
+    } 
     catch (error) {
         throw error
     }

@@ -23,7 +23,7 @@ const Project = () => {
     useEffect(() => {
         const fetchRoles = async () => {
             try {
-                const res = await axios.get('http://localhost:3001/api/ws-report/role');
+                const res = await axios.get('http://localhost:3001/api/ws-report/role');     // Fetching the role to display in the frontend
                 setRoleOptions(res.data);
             } catch (err) {
                 console.log(err);
@@ -31,8 +31,8 @@ const Project = () => {
         };
 
         const fetchEmployees = async () => {
-            try {
-                const res = await axios.get('http://localhost:3001/api/ws-report/employee');
+            try { 
+                const res = await axios.get('http://localhost:3001/api/ws-report/employee');   // Fetching the employee to display in the frontend
                 setEmployeeOptions(res.data);
             } catch (err) {
                 console.log(err);
@@ -78,7 +78,7 @@ const Project = () => {
 
         try {
             const res = await axios.post(
-                'http://localhost:3001/api/ws-report/projectdetail',
+                'http://localhost:3001/api/ws-report/projectdetail',               // Posting the data 
                 payload
             );
             console.log('success:', res.data);
@@ -98,7 +98,7 @@ const Project = () => {
     );
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+        <Box >
             <Container maxWidth="md">
 
                 <Grid container spacing={1}>
