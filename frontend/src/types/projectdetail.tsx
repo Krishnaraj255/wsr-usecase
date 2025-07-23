@@ -12,6 +12,11 @@ type ResourcesType = {
     }
 }
 
+type Emp = {
+    role: string,
+    employee: string
+}
+
 type projectStatus = {
     projectname: string;
     sprintNo: number | null;
@@ -27,4 +32,4 @@ type projectStatus = {
     resources: ResourcesType;
 }
 
-export type { projectDetail, projectStatus, ResourcesType };
+export type { projectDetail, projectStatus, ResourcesType,Emp };

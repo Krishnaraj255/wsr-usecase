@@ -13,7 +13,8 @@ import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from 'react-router-dom';
-import type { projectDetail } from '../../types/projectdetail';
+import type { projectDetail, projectStatus } from '../../types/projectdetail';
+
 
 const ProjectUpdate = () => {
     const [roleOptions, setRoleOptions] = useState<string[]>([]);
@@ -21,7 +22,8 @@ const ProjectUpdate = () => {
     const [rows, setRows] = useState<{ role: string | null; employee: string | null }[]>([
         { role: null, employee: null },
     ]);
-    const [projectName, setProjectName] = useState('');
+    const [projectName, setProjectName] = useState<string>('');
+    const [sprintData, setSprintData] = useState<projectStatus[]>([])
     const { projectId } = useParams<{ projectId: string }>();
 
 
@@ -52,6 +54,8 @@ const ProjectUpdate = () => {
 
                 setProjectName(projectData.projectName);
 
+                setSprintData(projectData.sprint)
+
                 const populatedRows: { role: string; employee: string }[] = [];
 
                 if (projectData.resources) {
@@ -73,11 +77,7 @@ const ProjectUpdate = () => {
         fetchEmployee();
     }, [projectId]);
 
-    const handleChange = (
-        index: number,
-        field: 'employee' | 'role',
-        value: string | null
-    ) => {
+    const handleChange = ( index: number,field: 'employee' | 'role', value: string | null ) => {
         const newRows = [...rows];
         newRows[index][field] = value;
         setRows(newRows);
@@ -108,13 +108,13 @@ const ProjectUpdate = () => {
             projectName,
             projectId,
             resources: resourceMap,
+            sprint: sprintData
         };
 
 
         try {
-            console.log(payload)
             const res = await axios.post(
-                `http://localhost:3001/api/ws-report/projectdetail/`,              // update the data
+                `http://localhost:3001/api/ws-report/projectdetail/`,             // update the data
                 payload
             );
             setRows([{ role: null, employee: null }]);
@@ -130,9 +130,9 @@ const ProjectUpdate = () => {
         (row) => !(row.employee && row.role) || !projectName
     );
 
-   const deleteRow = (indexToDelete:number) => {
-    setRows((prevRows) => prevRows.filter((_, index) => index !== indexToDelete));
-};
+    const deleteRow = (indexToDelete: number) => {
+        setRows((prevRows) => prevRows.filter((_, index) => index !== indexToDelete));
+    };
 
 
 
@@ -186,7 +186,7 @@ const ProjectUpdate = () => {
                                     <Button
                                         fullWidth
                                         variant="contained"
-                                        onClick={()=>deleteRow(index)}
+                                        onClick={() => deleteRow(index)}
                                     >
                                         <Tooltip title="Delete Employee">
                                             <IconButton  ><DeleteIcon /></IconButton>

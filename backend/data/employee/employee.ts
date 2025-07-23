@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto"
 import employeeModel from "../models/employeeModel"
 
+
 const create = async (employeeNames: string[]) => {
     try {
         const employee = employeeNames.map((name: string) => ({
@@ -14,15 +15,15 @@ const create = async (employeeNames: string[]) => {
     }
 }
 
-const get = async () => { 
+const get = async () => {
     try {
         return employeeModel.find({});
     } catch (error) {
         throw error;
     }
 }
- 
-export const Employee = { 
+
+export const Employee = {
     create,
     get
 }

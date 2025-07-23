@@ -3,7 +3,7 @@ import projectDetailModel from "../../../data/models/project";
 import { randomUUID } from 'crypto';
 import { Project } from '../../../data/project/project';
 import { project } from '../../../business/project/project';
-import projectType from '../../../types';
+
 
 
 const post = async (req: Request, res: Response) => {

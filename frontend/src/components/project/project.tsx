@@ -11,6 +11,7 @@ import {
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
+// import { Emp } from '../../types/projectdetail';
 
 const Project = () => {
     const [roleOptions, setRoleOptions] = useState<string[]>([]);
@@ -18,7 +19,7 @@ const Project = () => {
     const [rows, setRows] = useState<{ role: string | null; employee: string | null }[]>([
         { role: null, employee: null },
     ]);
-    const [projectName, setProjectName] = useState('');
+    const [projectName, setProjectName] = useState<string>('');
 
     useEffect(() => {
         const fetchRoles = async () => {
@@ -31,7 +32,7 @@ const Project = () => {
         };
 
         const fetchEmployees = async () => {
-            try { 
+            try {
                 const res = await axios.get('http://localhost:3001/api/ws-report/employee');   // Fetching the employee to display in the frontend
                 setEmployeeOptions(res.data);
             } catch (err) {

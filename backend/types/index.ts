@@ -1,8 +1,14 @@
-type projectType = {
+export type projectType = {
     projectId: string,
     projectName: string,
     resources: object,
     sprint: object
 }
 
-export default projectType
+// export type employeeType = {
+//     employeeId: string,
+//     employeeName: string
+// }
+
+
+

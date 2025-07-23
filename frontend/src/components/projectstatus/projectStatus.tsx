@@ -56,7 +56,7 @@ const ProjectStatus = () => {
   };
 
   const getProjectData = async (projectId: string) => {
-    const response = await axios.get(`http://localhost:3001/api/ws-report/projectdetail/${projectId}`)    // To display the resources
+    const response = await axios.get(`http://localhost:3001/api/ws-report/projectdetail/${projectId}`)    // To get the particular project data to display resources
     setProjectData(response.data)
 
   }
@@ -67,15 +67,13 @@ const ProjectStatus = () => {
     if (!projectData)
       return
 
-    const updatedSprints = Array.isArray(projectData.sprint)
-      ? [...projectData.sprint, value]
-      : [value];
+    const updatedSprints = Array.isArray(projectData.sprint) ? [...projectData.sprint, value] : [value];
 
     const payload = {
       ...projectData,
       sprint: updatedSprints
     };
-    console.log(payload)
+  
     try {
       const res = await axios.post("http://localhost:3001/api/ws-report/projectdetail/", payload)   //Posting the data
       alert("success")
@@ -106,7 +104,6 @@ const ProjectStatus = () => {
                 const projectId = newValue?.projectId || null;
                 setValue({ ...value, projectname: newValue?.projectName || "" });
                 if (projectId) {
-                  console.log("Selected Project ID:", projectId);
                   getProjectData(projectId)
                 }
               }}

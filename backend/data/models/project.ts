@@ -15,7 +15,7 @@ const projectSchema = new mongoose.Schema({
     },
     sprint: {
         type: Object,
-        default: {}
+        default: undefined
     },
     createdAt: {
         type: Date,
