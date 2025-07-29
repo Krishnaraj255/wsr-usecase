@@ -10,15 +10,10 @@ import axios from "axios";
 import '../../App.css'
 
 const ProjectStatus = () => {
-
   const statusOptions = ["Green", "Amber", "Red"];
-
-  const [data, setData] = useState<projectDetail[]>([])
-
-  const [projectData, setProjectData] = useState<projectDetail>()
-
-  const [error, setError] = useState<{ [key: string]: string }>({})
-
+  const [data, setData] = useState<projectDetail[]>([]);
+  const [projectData, setProjectData] = useState<projectDetail>();
+  const [error, setError] = useState<{ [key: string]: string }>({});
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [dialogMessage, setDialogMessage] = useState('');
 
@@ -35,27 +30,103 @@ const ProjectStatus = () => {
     velocity: null,
     status: "",
     resources: {}
-  }
+  };
 
-  const [value, setValue] = useState<projectStatus>(defalutValue)
+  const [value, setValue] = useState<projectStatus>(defalutValue);
 
   useEffect(() => {
     const fetchProject = async () => {
-      const response = await axios.get("http://localhost:3001/api/ws-report/projectdetail")     // To display the project name
-      setData(response.data)
-    }
-    fetchProject()
-
-  }, [])
-
+      const response = await axios.get("http://localhost:3001/api/ws-report/projectdetail");
+      setData(response.data);
+    };
+    fetchProject();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
-  };
+    const { name, value: inputValue } = e.target;
 
+
+    setValue((prev) => ({ ...prev, [name]: inputValue }));
+
+    // Create a copy of the current error state
+    const newError: { [key: string]: string } = { ...error };
+
+
+
+    if (name === "sprintNo") {
+      if (inputValue && Number(inputValue) >= 0) {
+        delete newError.sprintNo;
+      } else if (!inputValue) {
+        newError.sprintNo = "Sprint number is required";
+      } else {
+        newError.sprintNo = "Sprint number should not be negative";
+      }
+    }
+    if (name === "sprintGoal") {
+      if (inputValue) {
+        delete newError.sprintGoal;
+      } else {
+        newError.sprintGoal = "Sprint goal is required";
+      }
+    }
+    if (name === "startDate") {
+      if (inputValue) {
+        delete newError.startDate;
+      } else {
+        newError.startDate = "Start date is required";
+      }
+    }
+    if (name === "endDate") {
+      if (inputValue) {
+        const start = value.startDate ? new Date(value.startDate) : null;
+        const end = new Date(inputValue);
+        if (start && start > end) {
+          newError.endDate = "End date cannot be before start date";
+        } else {
+          delete newError.endDate;
+        }
+      } else {
+        newError.endDate = "End date is required";
+      }
+    }
+    if (name === "committedStoryPoints") {
+      if (inputValue && Number(inputValue) >= 0) {
+        delete newError.committedStoryPoints;
+      } else if (!inputValue) {
+        newError.committedStoryPoints = "Committed story points is required";
+      } else {
+        newError.committedStoryPoints = "Committed story points should not be negative";
+      }
+    }
+    if (name === "deliveredStoryPoints") {
+      if (inputValue && Number(inputValue) >= 0) {
+        delete newError.deliveredStoryPoints;
+      } else if (!inputValue) {
+        newError.deliveredStoryPoints = "Delivered story points is required";
+      } else {
+        newError.deliveredStoryPoints = "Delivered story points should not be negative";
+      }
+    }
+    if (name === "velocity") {
+      if (inputValue === "" || Number(inputValue) >= 0) {
+        delete newError.velocity;
+      } else {
+        newError.velocity = "Velocity should not be negative";
+      }
+    }
+    if (name === "status") {
+      if (inputValue) {
+        delete newError.status;
+      } else {
+        newError.status = "Status is required";
+      }
+    }
+
+    // Update the error state
+    setError(newError);
+  };
   const handleCapacityChange = (role: string, employee: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const capacityValue = e.target.value;
-
     setValue(prev => ({
       ...prev,
       resources: {
@@ -69,65 +140,59 @@ const ProjectStatus = () => {
   };
 
   const getProjectData = async (projectId: string) => {
-    const response = await axios.get(`http://localhost:3001/api/ws-report/projectdetail/${projectId}`)    // To get the particular project data to display resources
-    setProjectData(response.data)
-
-  }
-
+    const response = await axios.get(`http://localhost:3001/api/ws-report/projectdetail/${projectId}`);
+    setProjectData(response.data);
+  };
 
   const handleClick = async () => {
-
-    const newError: { [key: string]: string } = {}
+    const newError: { [key: string]: string } = {};
 
     if (!value.projectname) {
-      newError.projectname = "Project name is required"
+      newError.projectname = "Project name is required";
     }
     if (!value.sprintNo) {
-      newError.sprintNo = "Sprint number is required"
+      newError.sprintNo = "Sprint number is required";
     }
     if (value.sprintNo != null && value.sprintNo < 0) {
-      newError.sprintNo = "Sprint number should not be negative"
+      newError.sprintNo = "Sprint number should not be negative";
     }
     if (!value.sprintGoal) {
-      newError.sprintGoal = "Sprint goal is required"
+      newError.sprintGoal = "Sprint goal is required";
     }
     if (!value.startDate) {
-      newError.startDate = "Start date  is required"
+      newError.startDate = "Start date is required";
     }
     if (!value.endDate) {
-      newError.endDate = "End date is required"
+      newError.endDate = "End date is required";
     }
     if (value.startDate && value.endDate) {
       const start = new Date(value.startDate);
       const end = new Date(value.endDate);
       if (start > end) {
-        newError.endDate = "End date cannot be before start date"
+        newError.endDate = "End date cannot be before start date";
       }
     }
     if (!value.committedStoryPoints) {
-      newError.commitedStoryPoints = "committed story points is required"
+      newError.committedStoryPoints = "Committed story points is required";
     }
     if (value.committedStoryPoints != null && value.committedStoryPoints < 0) {
-      newError.commitedStoryPoints = "committed story points should not be negative"
+      newError.committedStoryPoints = "Committed story points should not be negative";
     }
     if (!value.deliveredStoryPoints) {
-      newError.deliveredStoryPoints = "delivered story points is required"
+      newError.deliveredStoryPoints = "Delivered story points is required";
     }
     if (value.deliveredStoryPoints != null && value.deliveredStoryPoints < 0) {
-      newError.deliveredStoryPoints = "delivered story points should not be negative"
+      newError.deliveredStoryPoints = "Delivered story points should not be negative";
     }
-
     if (value.velocity != null && value.velocity < 0) {
-      newError.velocity = "velocity should not be negative"
+      newError.velocity = "Velocity should not be negative";
     }
 
-
-    setError(newError)
+    setError(newError);
 
     if (Object.keys(newError).length > 0) return;
 
-    if (!projectData)
-      return
+    if (!projectData) return;
 
     const updatedSprints = Array.isArray(projectData.sprint) ? [...projectData.sprint, value] : [value];
 
@@ -137,18 +202,17 @@ const ProjectStatus = () => {
     };
 
     try {
-      const res = await axios.post("http://localhost:3001/api/ws-report/projectdetail/", payload)   //Posting the data
+      const res = await axios.post("http://localhost:3001/api/ws-report/projectdetail/", payload);
       setDialogMessage('Sprint details submitted successfully');
-      setDialogOpen(true)
-      setValue(defalutValue)
-      setError({})
-    }
-    catch (error) {
-      console.log("error while posting the data", error)
+      setDialogOpen(true);
+      setValue(defalutValue);
+      setError({});
+    } catch (error) {
+      console.log("error while posting the data", error);
       setDialogMessage('Sprint details failed to submit');
-      setDialogOpen(true)
+      setDialogOpen(true);
     }
-  }
+  };
 
   return (
     <Container className="status-container">
@@ -161,8 +225,8 @@ const ProjectStatus = () => {
           <Button onClick={() => setDialogOpen(false)} variant='contained' autoFocus> ok</Button>
         </DialogActions>
       </Dialog>
-      <Box component="form" className="status-form" >
-        <Typography variant="h4" className="text" sx={{ textAlign: "center" }} > Project Sprint</Typography>
+      <Box component="form" className="status-form">
+        <Typography variant="h4" className="text" sx={{ textAlign: "center" }}> Project Sprint</Typography>
         <Grid container spacing={2} justifyContent="center">
           <Grid size={{ xs: 12, md: 12, lg: 10 }}>
             <Autocomplete
@@ -172,9 +236,18 @@ const ProjectStatus = () => {
               value={data.find(project => project.projectName === value.projectname) || null}
               onChange={(event, newValue) => {
                 const projectId = newValue?.projectId || null;
-                setValue({ ...value, projectname: newValue?.projectName || "" });
+                setValue((prev) => ({ ...prev, projectname: newValue?.projectName || "" }));
+                setError((prev) => {
+                  const newError = { ...prev };
+                  if (newValue?.projectName) {
+                    delete newError.projectname;
+                  } else {
+                    newError.projectname = "Project name is required";
+                  }
+                  return newError;
+                });
                 if (projectId) {
-                  getProjectData(projectId)
+                  getProjectData(projectId);
                 }
               }}
               renderInput={(params) => (
@@ -193,7 +266,8 @@ const ProjectStatus = () => {
           </Grid>
 
           <Grid size={{ xs: 12, md: 12, lg: 10 }}>
-            <TextField label="Sprint Number"
+            <TextField
+              label="Sprint Number"
               variant="outlined"
               type="number"
               fullWidth
@@ -221,16 +295,12 @@ const ProjectStatus = () => {
 
           <Grid size={{ xs: 12, md: 12, lg: 10 }}>
             <TextField
-              label="Sprint start Date"
+              label="Sprint Start Date"
               type="date"
               variant="outlined"
               fullWidth
-              InputLabelProps={{
-                shrink: true, // Makes the label stay above the field
-              }}
-              InputProps={{
-                placeholder: '', // Hides native placeholder
-              }}
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ placeholder: '' }}
               className="bg-white"
               name="startDate"
               onChange={handleChange}
@@ -245,12 +315,8 @@ const ProjectStatus = () => {
               type="date"
               variant="outlined"
               fullWidth
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                placeholder: '',
-              }}
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ placeholder: '' }}
               className="bg-white"
               name="endDate"
               onChange={handleChange}
@@ -271,11 +337,14 @@ const ProjectStatus = () => {
           </Grid>
 
           <Grid size={{ xs: 12, md: 12, lg: 10 }}>
-            <TextField placeholder="Risk"
-              multiline minRows={3}
+            <TextField
+              placeholder="Risk"
+              multiline
+              minRows={3}
               fullWidth
               name="risk"
-              onChange={handleChange} />
+              onChange={handleChange}
+            />
           </Grid>
 
           <Grid size={{ xs: 12, md: 12, lg: 10 }}>
@@ -287,8 +356,8 @@ const ProjectStatus = () => {
               name="committedStoryPoints"
               onChange={handleChange}
               type="number"
-              error={!!error.commitedStoryPoints}
-              helperText={error.commitedStoryPoints}
+              error={!!error.committedStoryPoints}
+              helperText={error.committedStoryPoints}
               required
             />
           </Grid>
@@ -347,7 +416,6 @@ const ProjectStatus = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 12, lg: 10 }}>
             <Typography sx={{ marginBottom: "5px" }}>Resources</Typography>
-
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -361,21 +429,26 @@ const ProjectStatus = () => {
                   {projectData ? Object.entries(projectData.resources).flatMap(([role, names]) =>
                     names.map((name: string, index: number) => (
                       <TableRow key={`${role}-${index}`}>
-                        <TableCell align="center">{role}</TableCell> {/* Role repeated for each employee */}
-                        <TableCell align="center">{name}</TableCell> {/* Individual employee */}
+                        <TableCell align="center">{role}</TableCell>
+                        <TableCell align="center">{name}</TableCell>
                         <TableCell align="center">
-                          <TextField variant="outlined" size="small" onChange={handleCapacityChange(role, name)} type="number" />
+                          <TextField
+                            variant="outlined"
+                            size="small"
+                            onChange={handleCapacityChange(role, name)}
+                            type="number"
+                          />
                         </TableCell>
                       </TableRow>
                     ))
                   ) : null}
-
                 </TableBody>
               </Table>
             </TableContainer>
           </Grid>
-          <Grid size={{ xs: 12, md: 12, lg: 10 }} >
-            <Button fullWidth
+          <Grid size={{ xs: 12, md: 12, lg: 10 }}>
+            <Button
+              fullWidth
               variant="contained"
               sx={{ mt: 3 }}
               onClick={handleClick}
@@ -391,4 +464,3 @@ const ProjectStatus = () => {
 };
 
 export default ProjectStatus;
-
