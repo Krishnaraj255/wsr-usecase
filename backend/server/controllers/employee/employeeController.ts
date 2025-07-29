@@ -11,7 +11,7 @@ const post = async (req: Request, res: Response, next: NextFunction) => {
         res.status(500).send("Data insertion failed")
     }
 }
- 
+
 const get = async (req: Request, res: Response) => {
     try {
         const data = await Emp.get()

@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto"
 import employeeModel from "../models/employeeModel"
+import { employeeType } from "../../types"
 
 
 const create = async (employeeNames: string[]) => {

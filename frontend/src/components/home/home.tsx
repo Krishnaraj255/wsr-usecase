@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Paper, Button, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import type { projectDetail } from '../../types/projectdetail';
-
+import '../../App.css'
 
 
 const Home = () => {
@@ -39,13 +39,12 @@ const Home = () => {
     value.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
     return (
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 600 }} aria-label="simple table">
+        <TableContainer component={Paper} style={{ maxWidth: '100%', overflowX: 'auto' }} className='home-container'>
+            <Table aria-label="simple table">
                 <TableHead>
                     <TableRow>
                         <TableCell><h2>Project Name</h2></TableCell>
                         <TableCell ><h2>Resources</h2></TableCell>
-                        <TableCell align="right"><h2>Sprint</h2></TableCell>
                         <TableCell align="center"><h2>Action</h2></TableCell>
                         <TableCell align="center"><h2>Date</h2></TableCell>
                     </TableRow>
@@ -66,18 +65,11 @@ const Home = () => {
                                     </div>
                                 ))}
                             </TableCell>
-                            <TableCell align="right">
 
-                                {/* {val.sprint ? Object.entries(val.sprint).map(([key, value]) => (
-                                    <div key={key}>
-                                        <p>{key} : {value.join(',')}</p>
-                                    </div>
-                                )) : null} */}
-                            </TableCell>
                             <TableCell align="center">
                                 <Grid container spacing={1}>
                                     <Grid size={12}>
-                                        <Button variant='contained' color='inherit' onClick={() => handleUpdate(val.projectId)}>update</Button>
+                                        <Button variant='contained' color='inherit' onClick={() => handleUpdate(val.projectId)} className='update-btn'>update</Button>
                                     </Grid>
                                     <Grid size={12}>
                                         <Button variant='contained' color='error'>delete</Button>
@@ -85,7 +77,7 @@ const Home = () => {
                                 </Grid>
 
                             </TableCell>
-                            <TableCell align="right">{dateConversion(val.createdAt)}</TableCell>
+                            <TableCell align="center">{dateConversion(val.createdAt)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

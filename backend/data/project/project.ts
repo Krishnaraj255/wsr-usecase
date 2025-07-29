@@ -12,7 +12,6 @@ const save = async (data: projectType) => {
         const existingProject = await projectDetailModel.findOne({ projectId: updatedData.projectId });
 
         if (existingProject) {
-
             // const existingSprint = existingProject?.sprint ?? null
 
             // console.log("exist", existingSprint)
@@ -22,7 +21,6 @@ const save = async (data: projectType) => {
             //     ...updatedData,
             //     // sprint: updatedData.sprint
             // }
-
             existingProject.set(updatedData);
 
             await existingProject.save()

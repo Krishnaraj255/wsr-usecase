@@ -1,0 +1,116 @@
+body {
+    font-family: "Poppins", sans-serif;
+}
+
+.navbar {
+    background-color: green;
+}
+
+
+
+/* projectdetail page */
+
+.projectdetail-container {
+    border: 1px solid #1976d2;
+    box-shadow: 1px 1px 5px rgb(30, 104, 243);
+    border-radius: 10px;
+    min-width: 400px;
+    background-color: rgb(255, 255, 255);
+    padding: 30px;
+}
+
+.projectdetail-container .text {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+@media (max-width:900px) {
+    .projectdetail-container .text {
+        font-size: 30px;
+    }
+}
+
+@media (max-width:600px) {
+    .projectdetail-container .text {
+        font-size: 25px;
+    }
+}
+
+
+
+
+/* project status page */
+
+.status-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    border: 1px solid #1976d2;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 1px 2px 5px #1976d2;
+    min-width: 400px;
+
+}
+
+.status-container .text {
+    font-size: 35px;
+    margin-bottom: 20px
+}
+
+@media (max-width:900px) {
+    .status-container .text {
+        font-size: 30px;
+    }
+}
+
+@media (max-width:600px) {
+    .status-container .text {
+        font-size: 25px;
+    }
+
+    .status-container {
+        margin: 5px;
+    }
+}
+
+
+
+
+/* generate page*/
+
+.generate-container {
+    border: 1px solid #1976d2;
+    box-shadow: 1px 1px 5px rgb(30, 104, 243);
+    border-radius: 10px;
+    min-width: 500px;
+    background-color: rgb(255, 255, 255);
+    padding: 10px;
+    font-size: 35px;
+}
+
+@media (max-width:900px) {
+    .generate-container.text {
+        font-size: 30px;
+    }
+}
+
+@media (max-width:600px) {
+    .generate-container .text {
+        font-size: 25px;
+    }
+
+}
+
+
+/* home page*/
+
+.home-container {
+    min-width: 600px;
+}
+
+.home-container .update-btn{
+  background-color: green;
+  color: white;
+}
+

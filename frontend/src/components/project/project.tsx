@@ -6,12 +6,18 @@ import {
     Button,
     IconButton,
     Grid,
-    Tooltip
+    Tooltip,
+    Typography,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
-// import { Emp } from '../../types/projectdetail';
+import '../../App.css'
+
 
 const Project = () => {
     const [roleOptions, setRoleOptions] = useState<string[]>([]);
@@ -20,6 +26,8 @@ const Project = () => {
         { role: null, employee: null },
     ]);
     const [projectName, setProjectName] = useState<string>('');
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+    const [dialogMessage, setDialogMessage] = useState('');
 
     useEffect(() => {
         const fetchRoles = async () => {
@@ -39,7 +47,6 @@ const Project = () => {
                 console.log(err);
             }
         };
-
         fetchRoles();
         fetchEmployees();
     }, []);
@@ -68,7 +75,7 @@ const Project = () => {
         }
 
         if (Object.keys(resourceMap).length === 0) {
-            alert("You must add at least one employee with a role.");
+            setDialogMessage('You must add at least one employee with a role');
             return;
         }
 
@@ -85,10 +92,12 @@ const Project = () => {
             console.log('success:', res.data);
             setRows([{ role: null, employee: null }]);
             setProjectName("");
-            alert('Project submitted successfully!');
+            setDialogMessage('Project submitted successfully!');
+            setDialogOpen(true)
         } catch (err) {
             console.error('Submission error:', err);
-            alert('Failed to submit project.');
+            setDialogMessage('Failed to submit the project.');
+            setDialogOpen(true)
         }
     };
 
@@ -99,8 +108,20 @@ const Project = () => {
     );
 
     return (
+
+
         <Box >
-            <Container maxWidth="md">
+            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+                <DialogTitle>Project Submission</DialogTitle>
+                <DialogContent>
+                    <Typography>{dialogMessage}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDialogOpen(false)} variant='contained' autoFocus> ok</Button>
+                </DialogActions>
+            </Dialog>
+            <Container maxWidth="md" className='projectdetail-container'>
+                <Typography variant='h4' className='text' sx={{ textAlign: "center", marginBottom: "5px" }}>Project Details</Typography>
 
                 <Grid container spacing={1}>
                     <Grid size={12}>

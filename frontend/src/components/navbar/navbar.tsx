@@ -5,6 +5,7 @@ import Home from '../home/home';
 import ProjectUpdate from '../projectupdate/projectupdate';
 import StatusGenerate from '../generate/statusGenerate';
 import ProjectStatus from '../projectstatus/projectStatus';
+import '../../App.css'
 
 
 
@@ -12,14 +13,14 @@ import ProjectStatus from '../projectstatus/projectStatus';
 const Navbar = () => {
     return (
         <Router>
-            <AppBar position="fixed" color="primary">
+            <AppBar position="fixed" className='navbar'>
                 <Toolbar>
                     <Box sx={{ flexGrow: 1 }} />
                     <Button color="inherit" component={Link} to="/home">Home</Button>
                     <Button color="inherit" component={Link} to="/project/create">Project</Button>
-                    <Button color="inherit" component={Link} to="/projectstatus">status</Button>
+                    <Button color="inherit" component={Link} to="/projectstatus">Sprint</Button>
                     <Button color="inherit" component={Link} to="/statusGenerate">Download</Button>
-                    {/* <Button color="inherit" component={Link} to="/project/update">Project</Button> */}
+
                 </Toolbar>
             </AppBar>
             <Toolbar />

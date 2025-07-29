@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto"
 import roleModel from "../models/roleModel"
+import { roletType } from "../../types"
 
 const create = async (roleName: string[]) => {
 
@@ -9,8 +10,8 @@ const create = async (roleName: string[]) => {
             roleName: name
         }))
 
-        await roleModel.insertMany(role) 
-    } 
+        await roleModel.insertMany(role)
+    }
     catch (error) {
         throw error
     }

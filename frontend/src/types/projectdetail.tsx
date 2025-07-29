@@ -25,11 +25,11 @@ type projectStatus = {
     endDate: string | null;
     accomplishment: string;
     risk: string;
-    commitedStoryPoints: string;
-    deliveredStoryPoints: string;
+    committedStoryPoints: number | null;
+    deliveredStoryPoints: number | null;
     velocity: number | null;
     status: string;
     resources: ResourcesType;
 }
 
-export type { projectDetail, projectStatus, ResourcesType,Emp };
+export type { projectDetail, projectStatus, ResourcesType, Emp };

@@ -6,7 +6,9 @@ import {
     Button,
     IconButton,
     Grid,
-    Tooltip
+    Tooltip,
+    Dialog, DialogTitle, DialogContent, DialogActions,
+    Typography
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -14,6 +16,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from 'react-router-dom';
 import type { projectDetail, projectStatus } from '../../types/projectdetail';
+import '../../App.css'
 
 
 const ProjectUpdate = () => {
@@ -25,6 +28,9 @@ const ProjectUpdate = () => {
     const [projectName, setProjectName] = useState<string>('');
     const [sprintData, setSprintData] = useState<projectStatus[]>([])
     const { projectId } = useParams<{ projectId: string }>();
+
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false)
+    const [dialogMessage, setDialogMessage] = useState('')
 
 
     useEffect(() => {
@@ -77,7 +83,7 @@ const ProjectUpdate = () => {
         fetchEmployee();
     }, [projectId]);
 
-    const handleChange = ( index: number,field: 'employee' | 'role', value: string | null ) => {
+    const handleChange = (index: number, field: 'employee' | 'role', value: string | null) => {
         const newRows = [...rows];
         newRows[index][field] = value;
         setRows(newRows);
@@ -100,7 +106,7 @@ const ProjectUpdate = () => {
         }
 
         if (Object.keys(resourceMap).length === 0) {
-            alert("You must add at least one employee with a role.");
+            setDialogMessage("You must add at least one employee with a role.");
             return;
         }
 
@@ -119,10 +125,12 @@ const ProjectUpdate = () => {
             );
             setRows([{ role: null, employee: null }]);
             setProjectName("");
-            alert('Project updated successfully!');
+            setDialogMessage('Project updated successfully!');
+            setDialogOpen(true)
         } catch (err) {
             console.error('Submission error:', err);
-            alert('Failed to update project.');
+            setDialogMessage('Failed to update the project.');
+            setDialogOpen(true)
         }
     };
 
@@ -139,6 +147,15 @@ const ProjectUpdate = () => {
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+                <DialogTitle>Submission</DialogTitle>
+                <DialogContent>
+                    <Typography>{dialogMessage}</Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setDialogOpen(false)} variant='contained' autoFocus>ok</Button>
+                </DialogActions>
+            </Dialog>
             <Container maxWidth="md">
 
                 <Grid container spacing={1}>
