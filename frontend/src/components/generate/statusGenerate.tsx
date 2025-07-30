@@ -163,7 +163,6 @@ const StatusGenerate = () => {
                         />
                     </Grid>
 
-
                     <Grid size={12}>
 
                         {sprintError && (

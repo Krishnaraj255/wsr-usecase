@@ -5,8 +5,8 @@ import { Employee } from "../../../data/employee/employee";
 const post = async (req: Request, res: Response, next: NextFunction) => {
     const { employeeNames } = req.body
     try {
-        await Employee.create(employeeNames)
-        res.status(201).end("Employee created successfully")
+       const s = await Employee.create(employeeNames)
+        res.status(201).json(s)
     } catch (error) {
         res.status(500).send("Data insertion failed")
     }

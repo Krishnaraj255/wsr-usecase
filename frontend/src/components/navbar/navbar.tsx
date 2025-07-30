@@ -49,7 +49,7 @@ const Navbar = () => {
                 }}
             >
                 <List>
-                    <ListItem component={Link} to="/home" onClick={() => toggleDrawer(false)}>
+                    <ListItem component={Link} to="/" onClick={() => toggleDrawer(false)}>
                         <ListItemText primary="Home" />
                     </ListItem>
                     <ListItem component={Link} to="/project/create" onClick={() => toggleDrawer(false)}>
@@ -68,7 +68,7 @@ const Navbar = () => {
 
             <Container sx={{ mt: 4 }}>
                 <Routes>
-                    <Route path="/home" element={<Home />} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/project/create" element={<Project />} />
                     <Route path="/project/update/:projectId" element={<ProjectUpdate />} />
                     <Route path="/statusGenerate" element={<StatusGenerate />} />

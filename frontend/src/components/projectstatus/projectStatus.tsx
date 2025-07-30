@@ -48,7 +48,7 @@ const ProjectStatus = () => {
 
     setValue((prev) => ({ ...prev, [name]: inputValue }));
 
-    // Create a copy of the current error state
+
     const newError: { [key: string]: string } = { ...error };
 
 
@@ -122,7 +122,6 @@ const ProjectStatus = () => {
       }
     }
 
-    // Update the error state
     setError(newError);
   };
   const handleCapacityChange = (role: string, employee: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
