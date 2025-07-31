@@ -15,7 +15,7 @@ import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useParams } from 'react-router-dom';
-import type { projectDetail, projectStatus } from '../../types/projectdetail';
+import type { projectStatus } from '../../types/projectdetail';
 import '../../App.css'
 
 
@@ -122,7 +122,7 @@ const ProjectUpdate = () => {
             const res = await axios.post(
                 `http://localhost:3001/api/ws-report/projectdetail/`,             // update the data
                 payload
-            );
+            ); 
             setRows([{ role: null, employee: null }]);
             setProjectName("");
             setDialogMessage('Project updated successfully!');

@@ -29,6 +29,9 @@ const Home = () => {
     const handleUpdate = (projectId: string) => {
         navigte(`/project/update/${projectId}`)
     }
+    const handleDelete = (projectId: string) => {
+        setValue((prev) => prev.filter((item) => item.projectId !== projectId));
+    }
 
     const dateConversion = (createdAt: string) => {
         const d = new Date(createdAt);
@@ -72,7 +75,7 @@ const Home = () => {
                                         <Button variant='contained' color='inherit' onClick={() => handleUpdate(val.projectId)} className='update-btn'>update</Button>
                                     </Grid>
                                     <Grid size={12}>
-                                        <Button variant='contained' color='error'>delete</Button>
+                                        <Button variant='contained' color='error' onClick={() => handleDelete(val.projectId)}>delete</Button>
                                     </Grid>
                                 </Grid>
 
